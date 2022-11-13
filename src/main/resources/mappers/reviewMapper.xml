@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wemeet.root.mybatis.reviewMapper">
+	<resultMap type="com.wemeet.root.dto.reviewDTO" id="review">
+		<id property="content_id" column="content_id"/>
+		<result property = "cust_id" column="cust_id"/>
+		<result property = "content" column="content"/>
+		<result property = "title" column="title"/>
+		<result property="view_cnt" column="view_cnt"/>
+		<result property="inpt_date" column="inpt_date"/>
+	</resultMap>
+	
+	<select id="reviewHome" resultMap="review">
+		select * 
+		from (select @rownum := @rownum + 1 as rownum, a.*
+				from wwmreview a, (select @rownum := 0) tmp 
+				order by content_id) b
+		order by b.rownum desc
+			 
+	</select>
+	
+	<select id="selectReviewCount" resultType="Integer">
+		select count(*) from wwmreview
+	</select>
+	
+	<insert id="reviewSave">
+		insert into wwmreview(cust_id, title, content, inpt_date)
+		values(#{cust_id}, #{title}, #{content}, now())
+	</insert>
+	
+	<select id="reviewContent" resultMap="review">
+		select * from wwmreview where content_id = #{content_id}
+	</select>
+	
+	<update id="upHit">
+		update wwmreview set view_cnt = view_cnt + 1 where content_id = #{content_id}
+	</update>
+	
+</mapper>
