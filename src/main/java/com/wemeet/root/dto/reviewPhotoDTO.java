@@ -4,7 +4,16 @@ public class reviewPhotoDTO {
 	private String fileId;
 	private String fileName;
 	private String inptDate;
+	private int fileNo;
 	
+	
+	
+	public int getFileNo() {
+		return fileNo;
+	}
+	public void setFileNo(int fileNo) {
+		this.fileNo = fileNo;
+	}
 	public String getFileId() {
 		return fileId;
 	}

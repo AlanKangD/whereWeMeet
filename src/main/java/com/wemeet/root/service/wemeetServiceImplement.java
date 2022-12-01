@@ -21,6 +21,9 @@ import com.wemeet.root.mybatis.reviewMapper;
 public class wemeetServiceImplement implements wemeetService {
 	@Autowired reviewMapper rm; 
 	
+	public static final String imageinfo = "E:/filefolder";
+	
+	
 	public void reviewHome(Model model, int num) {
 		int pageLetter = 5;
 		int dataCount = rm.selectReviewCount();
@@ -55,6 +58,7 @@ public class wemeetServiceImplement implements wemeetService {
 		int resultSave = 0;
 		int resultPhotoSave = 1;
 		int fileCnt = 0;
+		int fileNoCheck = 0;
 		ArrayList<String> fileList = new ArrayList<String>();
 		
 		reviewDTO dto = new reviewDTO();
@@ -63,15 +67,31 @@ public class wemeetServiceImplement implements wemeetService {
 		dto.setContent(mul.getParameter("content"));
 		resultSave = rm.reviewSave(dto);
 		
-		while(mul.getFileNames().hasNext()) {
-			fileList.add(fileCnt, mul.getFileNames().next());
-			fileCnt++;
-		}
+		System.out.println("while 전");
+		System.out.println(mul.getFile("file1"));
+//		while(mul.getFileNames().hasNext()) {
+//			System.out.println("while 중");
+//			fileList.add(fileCnt, mul.getFileNames().next());
+//			fileCnt++;
+//		}
+		System.out.println("while 후");
+		
+		fileNoCheck = rm.reviewGetNo(dto.getCust_id(), dto.getTitle(), dto.getContent());
+		
+		System.out.println(fileNoCheck);
+		System.out.println(fileList);
+		//MultipartFile file = mul.getFile(imageinfo);
 		
 		for(int i=0;i<fileCnt;i++) {
+			
 			reviewPhotoDTO photo_dto = new reviewPhotoDTO();
-
-			MultipartFile file = mul.getFile(fileList.get(fileCnt));
+			
+//			MultipartFile file = mul.getFile(fileList.get(fileCnt));
+//			if(file != null && file.getSize() != 0 && fileNoCheck != 0) {
+//				photo_dto.setFileId(null);
+//				photo_dto.setFileName(mul.getParameter(null));
+//				photo_dto.setFileNo(fileNoCheck);
+//			}
 			
 			
 		}

@@ -38,4 +38,8 @@
 		update wwmreview set view_cnt = view_cnt + 1 where content_id = #{content_id}
 	</update>
 	
+	<select id="reviewGetNo" resultType="Integer">
+		select content_id from wwmreview where cust_id = #{cust_id} and title = #{title} and content = #{content}
+	</select>
+	
 </mapper>
