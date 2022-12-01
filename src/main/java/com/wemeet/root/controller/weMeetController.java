@@ -35,7 +35,6 @@ public class weMeetController {
 	@GetMapping("reviewContent")
 	public String weMeetContent(@RequestParam("content_id") int content_id, Model model, 
 			HttpServletRequest request, HttpServletResponse response, HttpSession session) {
-		System.out.println("content_id");
 		ms.reviewContent(content_id, model);
 		
 		return "wwmReview/reviewContent";
@@ -47,9 +46,10 @@ public class weMeetController {
 	}
 	
 	@PostMapping("reviewSave")
-	public void reviewSave(HttpServletResponse response,
+	public void reviewSave(MultipartHttpServletRequest mul,
+			HttpServletResponse response,
 			HttpServletRequest request) throws Exception {
-		String message = ms.reviewSave(request);
+		String message = ms.reviewSave(mul, request);
 		PrintWriter out = null;
 		response.setContentType("text/html; charset=utf-8");
 		out = response.getWriter();

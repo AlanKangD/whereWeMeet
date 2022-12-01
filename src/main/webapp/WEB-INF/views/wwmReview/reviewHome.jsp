@@ -15,6 +15,14 @@
 </script>
 </head>
 <body>
+   <c:choose>
+      <c:when test="${param.num == null }">
+         <c:set var="num" value="1"/>
+      </c:when>
+      <c:otherwise>
+         <c:set var="num" value="${param.num }"/>
+      </c:otherwise>
+   </c:choose>
 	<div>
 		<h1>
 			게시판
@@ -30,7 +38,7 @@
 				<th>작성일</th>
 				<th>조회수</th>
 			</tr>
-			<c:set var="reviewNo" value = "${dataCount}"/>
+			<c:set var="reviewNo" value = "${dataCount - ((num-1) * 5)}"/>
 			
 			
 			<!-- 리뷰글 게시판에 나열 -->
@@ -49,6 +57,23 @@
 		</table>
 	</div>
 	<div>
+         <c:choose>
+            <c:when test="${num != 1 }">
+               <a href="${contextPath}/wwmReview/reviewHome?num=1"> << </a>
+            </c:when>
+            <c:otherwise>
+               <a></a>
+            </c:otherwise>
+         </c:choose>
+         
+         <c:choose>
+            <c:when test="${num > 1 }">
+                <a href="${contextPath}/wwmReview/reviewHome?num=${num - 1}"> < </a>
+            </c:when>
+            <c:otherwise>
+               <a></a>
+            </c:otherwise>
+         </c:choose>
 		<!-- 페이징 -->
 		<c:forEach var="cnt" begin="${beginPage}" end="${ endPage }">
 			<c:choose>
@@ -60,6 +85,23 @@
 				</c:otherwise>
 			</c:choose>
 		</c:forEach>
+		         <c:choose>
+            <c:when test="${num < repeat}">
+                <a href="${contextPath}/wwmReview/reviewHome?num=${num + 1}">></a>
+            </c:when>
+            <c:otherwise>
+               <a></a>
+            </c:otherwise>
+         </c:choose>
+         
+         <c:choose>
+            <c:when test="${num != repeat}">
+                <a href="${contextPath}/wwmReview/reviewHome?num=${repeat}">>></a>
+            </c:when>
+            <c:otherwise>
+                <a></a>
+            </c:otherwise>
+         </c:choose>
 	</div>
 	<div align="right">
 		<input type="button" value="글쓰기" onclick="location.href='${reviewWrite}'">

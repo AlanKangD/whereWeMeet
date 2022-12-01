@@ -7,7 +7,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 public interface wemeetService {
 	public void reviewHome(Model model, int num);
-	public String reviewSave(HttpServletRequest request);
+	public String reviewSave(MultipartHttpServletRequest mul, HttpServletRequest request);
 	public void reviewContent(int content_id, Model model);
 	public void upHit(int review_no);
 }

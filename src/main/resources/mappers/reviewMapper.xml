@@ -16,6 +16,7 @@
 		from (select @rownum := @rownum + 1 as rownum, a.*
 				from wwmreview a, (select @rownum := 0) tmp 
 				order by content_id) b
+		where rownum between #{s} and #{e}
 		order by b.rownum desc
 			 
 	</select>

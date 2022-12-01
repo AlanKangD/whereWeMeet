@@ -1,6 +1,7 @@
 package com.wemeet.root.service;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -8,9 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.wemeet.root.dto.reviewDTO;
+import com.wemeet.root.dto.reviewPhotoDTO;
 import com.wemeet.root.mybatis.reviewMapper;
 
 @Primary
@@ -25,7 +28,7 @@ public class wemeetServiceImplement implements wemeetService {
 		if(dataCount%pageLetter != 0) {
 			repeat += 1;
 		}
-		int end = num * pageLetter;
+		int end = dataCount - ((num-1) * 5);
 		int start = end + 1 - pageLetter;
 		
 		int pagingNum = 5;
@@ -45,18 +48,34 @@ public class wemeetServiceImplement implements wemeetService {
 		model.addAttribute("endPage", endPage);
 		model.addAttribute("repeat", repeat);
 		model.addAttribute("reviewList", rm.reviewHome(start, end));
-		
 	}
 
 	@Override
-	public String reviewSave(HttpServletRequest request) {
+	public String reviewSave(MultipartHttpServletRequest mul, HttpServletRequest request) {
 		int resultSave = 0;
+		int resultPhotoSave = 1;
+		int fileCnt = 0;
+		ArrayList<String> fileList = new ArrayList<String>();
 		
 		reviewDTO dto = new reviewDTO();
-		dto.setCust_id(request.getParameter("cust_id"));
-		dto.setTitle(request.getParameter("title"));
-		dto.setContent(request.getParameter("content"));
+		dto.setCust_id(mul.getParameter("cust_id"));
+		dto.setTitle(mul.getParameter("title"));
+		dto.setContent(mul.getParameter("content"));
 		resultSave = rm.reviewSave(dto);
+		
+		while(mul.getFileNames().hasNext()) {
+			fileList.add(fileCnt, mul.getFileNames().next());
+			fileCnt++;
+		}
+		
+		for(int i=0;i<fileCnt;i++) {
+			reviewPhotoDTO photo_dto = new reviewPhotoDTO();
+
+			MultipartFile file = mul.getFile(fileList.get(fileCnt));
+			
+			
+		}
+		
 		
 		String msg, url;
 		if(resultSave == 1) {

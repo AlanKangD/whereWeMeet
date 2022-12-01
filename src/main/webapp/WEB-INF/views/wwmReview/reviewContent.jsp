@@ -14,19 +14,40 @@
 		<h1>${ reviewContent.title }</h1>
 	</div>
 	<div>
-		<strong>작성자</strong> ${reviewContent.cust_id }
-	</div>		
-	<div>
-		<strong>작성일</strong> ${reviewContent.inpt_date }
-		<strong>조회수</strong> ${reviewContent.view_cnt }
-	</div>
-	<div>
 		<table border="1">
 			<tr>
-				<td>${ reviewContent.content }</td>
+				<th>
+					작성자
+				</th>
+				<td>
+					${reviewContent.cust_id }
+				</td>
+			</tr>
+			<tr>
+				<th>
+					작성일
+				</th>
+				<td>
+					${reviewContent.inpt_date }
+				</td>
+				<th>
+					조회수
+				</th>
+				<td>
+					${reviewContent.view_cnt }
+				</td>
+			</tr>
+			<tr>
+
+			</tr>
+			<tr>
+				<td colspan ="4"> 
+					${ reviewContent.content }
+				</td>
 			</tr>
 		</table>
 	</div>
+
 	<div style="margin-bottom: 30px;">
 		<input type="button" value="목록으로" onClick="location.href='${reviewHome}'"/>
 	</div>
