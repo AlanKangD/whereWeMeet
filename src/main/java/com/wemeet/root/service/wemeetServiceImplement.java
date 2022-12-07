@@ -1,5 +1,7 @@
 package com.wemeet.root.service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -60,6 +62,8 @@ public class wemeetServiceImplement implements wemeetService {
 		int fileCnt = 0;
 		int fileNoCheck = 0;
 		ArrayList<String> fileList = new ArrayList<String>();
+		LocalDateTime now = LocalDateTime.now();
+		String formatNow = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 		
 		reviewDTO dto = new reviewDTO();
 		dto.setCust_id(mul.getParameter("cust_id"));
@@ -67,14 +71,12 @@ public class wemeetServiceImplement implements wemeetService {
 		dto.setContent(mul.getParameter("content"));
 		resultSave = rm.reviewSave(dto);
 		
-		System.out.println("while 전");
 		System.out.println(mul.getFile("file1"));
-//		while(mul.getFileNames().hasNext()) {
-//			System.out.println("while 중");
-//			fileList.add(fileCnt, mul.getFileNames().next());
-//			fileCnt++;
-//		}
-		System.out.println("while 후");
+//		System.out.println(mul.getfile);
+		while(mul.getFileNames().hasNext()) {
+			fileList.add(fileCnt, mul.getFileNames().next());
+			fileCnt++;
+		}
 		
 		fileNoCheck = rm.reviewGetNo(dto.getCust_id(), dto.getTitle(), dto.getContent());
 		
@@ -86,12 +88,14 @@ public class wemeetServiceImplement implements wemeetService {
 			
 			reviewPhotoDTO photo_dto = new reviewPhotoDTO();
 			
-//			MultipartFile file = mul.getFile(fileList.get(fileCnt));
-//			if(file != null && file.getSize() != 0 && fileNoCheck != 0) {
-//				photo_dto.setFileId(null);
-//				photo_dto.setFileName(mul.getParameter(null));
-//				photo_dto.setFileNo(fileNoCheck);
-//			}
+			MultipartFile file = mul.getFile(fileList.get(fileCnt));
+			if(file != null && file.getSize() != 0 && fileNoCheck != 0) {
+				photo_dto.setFileId(dto.getCust_id() + i);
+				photo_dto.setFileName(fileList.get(i));
+				photo_dto.setFileWriter(dto.getCust_id());
+				photo_dto.setFileNo(fileNoCheck);
+				photo_dto.setInptDate(formatNow);
+			}
 			
 			
 		}

@@ -4,10 +4,16 @@ public class reviewPhotoDTO {
 	private String fileId;
 	private String fileName;
 	private String inptDate;
+	private String fileWriter;
 	private int fileNo;
 	
 	
-	
+	public String getFileWriter() {
+		return fileWriter;
+	}
+	public void setFileWriter(String fileWriter) {
+		this.fileWriter = fileWriter;
+	}
 	public int getFileNo() {
 		return fileNo;
 	}
