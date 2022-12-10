@@ -47,10 +47,10 @@
 		insert into filetable(fileid, filerealname, filedate, filewriter, fileno)
 		values(#{fileId}, #{fileRealName}, #{inptDate}, #{fileWriter}, #{fileNo})
 	</insert>
-	<update id="fileModify">
+<!-- 	<update id="fileModify">
 		
 	</update>
 	<delete id="fileDelete">
 	
-	</delete>	
+	</delete> -->	
 </mapper>

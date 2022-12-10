@@ -67,19 +67,40 @@ public class wemeetServiceImplement implements wemeetService {
 		LocalDateTime now = LocalDateTime.now();
 		String formatNow = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 		
+		
+		
 		reviewDTO dto = new reviewDTO();
 		dto.setCust_id(mul.getParameter("cust_id"));
 		dto.setTitle(mul.getParameter("title"));
-		dto.setContent(mul.getParameter("content"));
+		dto.setContent("summernote 사용중");
+		System.out.println("content : " + mul.getParameter("content"));
 		resultSave = rm.reviewSave(dto);
 		
 //		System.out.println(mul.getfile);
-		System.out.println(mul.getFileNames().next());
-		while(mul.getFileNames().hasNext()) {
-			fileList.add(fileCnt, mul.getFileNames().next());
-			fileCnt++;
-			break;
-		}
+		System.out.println(mul.getFileNames());
+		ArrayList<String> fileName = new ArrayList<String>();
+		ArrayList<MultipartFile> valuevalue = new ArrayList<MultipartFile>();
+		
+//		for(int j = 1; j <= mul.getFileMap().size(); j++) {
+//			
+//			valuevalue.add(mul.getFileMap().get("file" + j));
+//		}
+		fileName.addAll(mul.getFileMap().keySet());
+		System.out.println("fileName : " + fileName);
+		System.out.println("value : " + valuevalue);
+		System.out.println("valuesize : " + valuevalue.size());
+		
+//		for(int k = 0; k < valuevalue.size(); k++) {
+//			valuevalue.get(k);
+//			
+//		}
+		
+		
+//		while(mul.getFileNames().hasNext()) {
+//			fileList.add(mul.getFileNames().next());
+//			fileCnt++;
+//			break;
+//		}
 		
 		fileNoCheck = rm.reviewGetNo(dto.getCust_id(), dto.getTitle(), dto.getContent());
 		
@@ -88,12 +109,13 @@ public class wemeetServiceImplement implements wemeetService {
 		System.out.println("fileCnt : " + fileCnt);
 		//MultipartFile file = mul.getFile(imageinfo);
 		
-		for(int i=0;i<fileCnt;i++) {
+		for(int i=0;i<fileName.size();i++) {
 			
 			reviewPhotoDTO photo_dto = new reviewPhotoDTO();
 			String fileId = fileNoCheck + dto.getCust_id();
 			
-			MultipartFile file = mul.getFile(fileList.get(i));
+			MultipartFile file = mul.getFile(fileName.get(i));
+			System.out.println(file);
 			if(file != null && file.getSize() != 0 && fileNoCheck != 0) {
 				photo_dto.setFileId(fileId + i);
 				photo_dto.setFileRealName(file.getOriginalFilename());
@@ -101,13 +123,11 @@ public class wemeetServiceImplement implements wemeetService {
 				photo_dto.setFileNo(fileNoCheck);
 				photo_dto.setInptDate(formatNow);
 				System.out.println(photo_dto.getFileId());
-				wfs.transferFile(file, photo_dto.getFileId());
+				wfs.transferFile(file, photo_dto.getFileId() + file.getOriginalFilename());
 				resultFileSave.add(i, rm.fileSave(photo_dto));
 			}else {
 				resultFileSave.add(i, 1);
 			}
-			
-			
 		}
 		
 		

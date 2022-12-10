@@ -14,6 +14,19 @@
 <script type="text/javascript">
 	var fileCnt = 1;
 	
+	$(document).ready(function() {
+		//여기 아래 부분
+		$('#summernote').summernote({
+			  height: 300,                 // 에디터 높이
+			  minHeight: null,             // 최소 높이
+			  maxHeight: null,             // 최대 높이
+			  focus: true,                  // 에디터 로딩후 포커스를 맞출지 여부
+			  lang: "ko-KR",					// 한글 설정
+			  placeholder: '최대 2048자까지 쓸 수 있습니다'	//placeholder 설정
+	          
+		});
+	});
+	
 	function add_file(){/* 사진을 추가할 수 있는 새로운 input과 비어있는 preview를 생성하는 기능 */
 /* 		if(photo_count == 10){
 			alter("사진은 최대 10장까지 첨부할 수 있습니다.")
@@ -64,19 +77,19 @@
 <body>
 	<div>
 		<h1 style="text-align:center;">글쓰기</h1><br>
-		<form id="summernote" method="post" action="${reviewSave }" enctype="multipart/form-data">
+		<form method="post" action="${reviewSave }" enctype="multipart/form-data">
 			<b>작성자</b><br>
 			<input type="text" name="cust_id" value="${cust_id }" ><br>
 			<b>제목</b><br>
-			<input type="text" name="title" size="30" placeholder="제목을 입력해 주세요."><br>
+			<input  type="text" name="title" size="30" placeholder="제목을 입력해 주세요."><br>
 			<b>내용</b><br>
-			<textarea style="resize:none;" rows="40" cols="80" placeholder="내용을 입력해 주세요." name="content"></textarea><br>
+			<textarea id="summernote" style="resize:none;" rows="40" cols="80" placeholder="내용을 입력해 주세요." name="content"></textarea><br>
 			<b>파일명</b><br>
 			<div id="fileList">
-
+				
 			</div>
 			
-			<div align="right" id="summernote">
+			<div align="right">
 				<input type="button" value="파일추가" onclick="add_file();">
 				<input type="button" value="파일삭제" onclick="delete_file();">
 				<input type="button" value="목록으로" onClick="location.href='${reviewHome}'"/>

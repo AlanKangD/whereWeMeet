@@ -4,8 +4,13 @@ import java.io.File;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+@Primary
+@Service
 public class wemeetFileServiceImplement implements wemeetFileService{
 
 	@Override
@@ -17,7 +22,9 @@ public class wemeetFileServiceImplement implements wemeetFileService{
 	@Override
 	public void transferFile(MultipartFile file, String fileName) {
 		System.out.println("transferFile 내부");
+		//File fileName = new File();
 		File transferToFile = new File(IMAGE_REPO + "/" + fileName);
+		//System.out.println(mul.getFile());
 		try {
 			file.transferTo(transferToFile);//해당 위치에 파일 저장
 		} catch (Exception e) {
