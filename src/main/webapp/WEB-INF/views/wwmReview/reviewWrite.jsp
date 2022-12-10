@@ -52,11 +52,19 @@
 	}
 	
 </script>
+<!-- include libraries(jQuery, bootstrap) -->
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+<!-- include summernote css/js -->
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 </head>
 <body>
 	<div>
 		<h1 style="text-align:center;">글쓰기</h1><br>
-		<form method="post" action="${reviewSave }" enctype="multipart/form-data">
+		<form id="summernote" method="post" action="${reviewSave }" enctype="multipart/form-data">
 			<b>작성자</b><br>
 			<input type="text" name="cust_id" value="${cust_id }" ><br>
 			<b>제목</b><br>
@@ -68,7 +76,7 @@
 
 			</div>
 			
-			<div align="right">
+			<div align="right" id="summernote">
 				<input type="button" value="파일추가" onclick="add_file();">
 				<input type="button" value="파일삭제" onclick="delete_file();">
 				<input type="button" value="목록으로" onClick="location.href='${reviewHome}'"/>

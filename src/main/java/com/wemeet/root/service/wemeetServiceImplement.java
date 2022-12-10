@@ -22,6 +22,7 @@ import com.wemeet.root.mybatis.reviewMapper;
 @Service
 public class wemeetServiceImplement implements wemeetService {
 	@Autowired reviewMapper rm; 
+	@Autowired wemeetFileService wfs;
 	
 	public static final String imageinfo = "E:/filefolder";
 	
@@ -62,6 +63,7 @@ public class wemeetServiceImplement implements wemeetService {
 		int fileCnt = 0;
 		int fileNoCheck = 0;
 		ArrayList<String> fileList = new ArrayList<String>();
+		ArrayList<Integer> resultFileSave = new ArrayList<Integer>();
 		LocalDateTime now = LocalDateTime.now();
 		String formatNow = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 		
@@ -71,30 +73,38 @@ public class wemeetServiceImplement implements wemeetService {
 		dto.setContent(mul.getParameter("content"));
 		resultSave = rm.reviewSave(dto);
 		
-		System.out.println(mul.getFile("file1"));
 //		System.out.println(mul.getfile);
+		System.out.println(mul.getFileNames().next());
 		while(mul.getFileNames().hasNext()) {
 			fileList.add(fileCnt, mul.getFileNames().next());
 			fileCnt++;
+			break;
 		}
 		
 		fileNoCheck = rm.reviewGetNo(dto.getCust_id(), dto.getTitle(), dto.getContent());
 		
-		System.out.println(fileNoCheck);
-		System.out.println(fileList);
+		System.out.println("fileNoCheck : " + fileNoCheck);
+		System.out.println("fileList : " + fileList);
+		System.out.println("fileCnt : " + fileCnt);
 		//MultipartFile file = mul.getFile(imageinfo);
 		
 		for(int i=0;i<fileCnt;i++) {
 			
 			reviewPhotoDTO photo_dto = new reviewPhotoDTO();
+			String fileId = fileNoCheck + dto.getCust_id();
 			
-			MultipartFile file = mul.getFile(fileList.get(fileCnt));
+			MultipartFile file = mul.getFile(fileList.get(i));
 			if(file != null && file.getSize() != 0 && fileNoCheck != 0) {
-				photo_dto.setFileId(dto.getCust_id() + i);
-				photo_dto.setFileName(fileList.get(i));
+				photo_dto.setFileId(fileId + i);
+				photo_dto.setFileRealName(file.getOriginalFilename());
 				photo_dto.setFileWriter(dto.getCust_id());
 				photo_dto.setFileNo(fileNoCheck);
 				photo_dto.setInptDate(formatNow);
+				System.out.println(photo_dto.getFileId());
+				wfs.transferFile(file, photo_dto.getFileId());
+				resultFileSave.add(i, rm.fileSave(photo_dto));
+			}else {
+				resultFileSave.add(i, 1);
 			}
 			
 			
@@ -102,7 +112,11 @@ public class wemeetServiceImplement implements wemeetService {
 		
 		
 		String msg, url;
-		if(resultSave == 1) {
+		if(resultFileSave.contains(0)) {
+			resultPhotoSave = 0;
+		}
+		
+		if(resultSave == 1 && resultPhotoSave == 1) {
 			msg = "리뷰등록 완료";
 			url = "/wwmReview/reviewHome";
 		}else {

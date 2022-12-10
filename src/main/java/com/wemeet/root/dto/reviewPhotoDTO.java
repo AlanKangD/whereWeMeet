@@ -2,7 +2,7 @@ package com.wemeet.root.dto;
 
 public class reviewPhotoDTO {
 	private String fileId;
-	private String fileName;
+	private String fileRealName;
 	private String inptDate;
 	private String fileWriter;
 	private int fileNo;
@@ -26,11 +26,11 @@ public class reviewPhotoDTO {
 	public void setFileId(String fileId) {
 		this.fileId = fileId;
 	}
-	public String getFileName() {
-		return fileName;
+	public String getFileRealName() {
+		return fileRealName;
 	}
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
+	public void setFileRealName(String fileRealName) {
+		this.fileRealName = fileRealName;
 	}
 	public String getInptDate() {
 		return inptDate;
