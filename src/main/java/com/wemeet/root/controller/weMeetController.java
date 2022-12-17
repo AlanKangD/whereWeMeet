@@ -3,6 +3,7 @@ package com.wemeet.root.controller;
 import java.io.PrintWriter;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -14,8 +15,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.wemeet.root.service.wemeetFileService;
 import com.wemeet.root.service.wemeetService;
 import com.wemeet.root.service.wemeetServiceImplement;
 
@@ -23,6 +27,7 @@ import com.wemeet.root.service.wemeetServiceImplement;
 @Controller
 public class weMeetController {
 	@Autowired wemeetService ms;
+	@Autowired wemeetFileService mfs;
 	
 	@GetMapping("reviewHome")
 	public String weMeetHome(Model model,
@@ -54,6 +59,15 @@ public class weMeetController {
 		response.setContentType("text/html; charset=utf-8");
 		out = response.getWriter();
 		out.println(message);		
+	}
+	
+	@RequestMapping(value="/uploadSummernoteImageFile", produces = "application/json; charset=utf8")
+	@ResponseBody
+	public String uploadSummernoteImageFile(@RequestParam("file") MultipartFile multipartFile, HttpServletRequest request )  {
+		String message = mfs.uploadSummernoteImageFile(multipartFile, request);
+		System.out.println("multipartFile : " + multipartFile);
+		System.out.println("filename : " + multipartFile.getName());
+		return message;
 	}
 	
 	

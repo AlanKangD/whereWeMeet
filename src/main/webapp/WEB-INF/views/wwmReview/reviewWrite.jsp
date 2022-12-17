@@ -14,18 +14,7 @@
 <script type="text/javascript">
 	var fileCnt = 1;
 	
-	$(document).ready(function() {
-		//여기 아래 부분
-		$('#summernote').summernote({
-			  height: 300,                 // 에디터 높이
-			  minHeight: null,             // 최소 높이
-			  maxHeight: null,             // 최대 높이
-			  focus: true,                  // 에디터 로딩후 포커스를 맞출지 여부
-			  lang: "ko-KR",					// 한글 설정
-			  placeholder: '최대 2048자까지 쓸 수 있습니다'	//placeholder 설정
-	          
-		});
-	});
+	
 	
 	function add_file(){/* 사진을 추가할 수 있는 새로운 input과 비어있는 preview를 생성하는 기능 */
 /* 		if(photo_count == 10){
@@ -65,6 +54,67 @@
 	}
 	
 </script>
+<script>
+$(document).ready(function() {
+
+	var toolbar = [
+		    // 글꼴 설정
+		    ['fontname', ['fontname']],
+		    // 글자 크기 설정
+		    ['fontsize', ['fontsize']],
+		    // 굵기, 기울임꼴, 밑줄,취소 선, 서식지우기
+		    ['style', ['bold', 'italic', 'underline','strikethrough', 'clear']],
+		    // 글자색
+		    ['color', ['forecolor','color']],
+		    // 표만들기
+		    ['table', ['table']],
+		    // 글머리 기호, 번호매기기, 문단정렬
+		    ['para', ['ul', 'ol', 'paragraph']],
+		    // 줄간격
+		    ['height', ['height']],
+		    // 그림첨부, 링크만들기, 동영상첨부
+		    ['insert',['picture','link','video']],
+		    // 코드보기, 확대해서보기, 도움말
+		    ['view', ['codeview','fullscreen', 'help']]
+		  ];
+
+	var setting = {
+            height : 300,
+            minHeight : null,
+            maxHeight : null,
+            focus : true,
+            lang : 'ko-KR',
+            toolbar : toolbar,
+            callbacks : { //여기 부분이 이미지를 첨부하는 부분
+            onImageUpload : function(files, editor,
+            welEditable) {
+            for (var i = files.length - 1; i >= 0; i--) {
+            	uploadSummernoteImageFile(files[i],
+            this);
+            		}
+            	}
+            }
+         };
+
+        $('#summernote').summernote(setting);
+        });
+
+	function uploadSummernoteImageFile(file, el) {
+		data = new FormData();
+		data.append("file", file);
+		$.ajax({
+			data : data,
+			type : "POST",
+			url : "uploadSummernoteImageFile",
+			contentType : false,
+			enctype : 'multipart/form-data',
+			processData : false,
+			success : function(data) {
+				$(el).summernote('editor.insertImage', data.url);
+			}
+		});
+	}
+</script>
 <!-- include libraries(jQuery, bootstrap) -->
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -83,7 +133,7 @@
 			<b>제목</b><br>
 			<input  type="text" name="title" size="30" placeholder="제목을 입력해 주세요."><br>
 			<b>내용</b><br>
-			<textarea id="summernote" style="resize:none;" rows="40" cols="80" placeholder="내용을 입력해 주세요." name="content"></textarea><br>
+			<textarea id="summernote" style="resize:none;" placeholder="내용을 입력해 주세요." name="content"></textarea><br>
 			<b>파일명</b><br>
 			<div id="fileList">
 				

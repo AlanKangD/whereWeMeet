@@ -13,4 +13,5 @@ public interface wemeetFileService {
 	public void transferFile(MultipartFile file, String fileName);
 	public String saveOriginFile(MultipartFile file);
 	public void deleteFile(String originFileName);
+	public String uploadSummernoteImageFile(MultipartFile file, HttpServletRequest request);
 }

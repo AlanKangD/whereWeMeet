@@ -72,7 +72,8 @@ public class wemeetServiceImplement implements wemeetService {
 		reviewDTO dto = new reviewDTO();
 		dto.setCust_id(mul.getParameter("cust_id"));
 		dto.setTitle(mul.getParameter("title"));
-		dto.setContent("summernote 사용중");
+		dto.setContent(mul.getParameter("content"));
+		System.out.println("file : " + mul.getParameter("file"));
 		System.out.println("content : " + mul.getParameter("content"));
 		resultSave = rm.reviewSave(dto);
 		
